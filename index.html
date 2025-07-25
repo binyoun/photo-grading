@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photography 101 - Assignment Grading System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .student-info {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .student-info input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .photo-section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .photo-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .photo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .photo-title {
+            font-size: 1.5rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .photo-goal {
+            font-style: italic;
+            color: #6c757d;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .score-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .criteria-category {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .criteria-category h4 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-score {
+            margin-left: auto;
+            color: #667eea;
+            font-weight: normal;
+        }
+
+        .checkpoint-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 8px;
+            background: white;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+
+        .checkpoint-item:hover {
+            background: #e9ecef;
+        }
+
+        .checkpoint-item input[type="checkbox"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkpoint-text {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .checkpoint-points {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: bold;
+            color: #6c757d;
+        }
+
+        .checkpoint-points input {
+            width: 40px;
+            padding: 4px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .comment-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .comment-section h4 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .comment-section textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            min-height: 100px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .quick-comments {
+            margin-top: 10px;
+        }
+
+        .quick-comment-btn {
+            background: #e9ecef;
+            border: none;
+            padding: 6px 12px;
+            margin: 3px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .quick-comment-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .reflection-section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .reflection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .reflection-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .reflection-item input {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            text-align: center;
+        }
+
+        .final-grade {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .grade-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .grade-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .breakdown-item {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .grade-descriptor {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .descriptor-item {
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+
+        .descriptor-item.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a54d8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
+        .progress-indicator {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-text {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin: 0 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .criteria-category {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media print {
+            .btn, .quick-comment-btn {
+                display: none;
+            }
+            
+            .photo-section, .reflection-section, .final-grade {
+                break-inside: avoid;
+            }
+            
+            .progress-indicator {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📸 Photography 101 - Assignment 1: Photographic Techniques</h1>
+            <p>Comprehensive Grading System with Detailed Checkpoints</p>
+        </div>
+
+        <div class="progress-indicator">
+            <span class="progress-text">Grading Progress:</span>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span id="progressPercent">0%</span>
+        </div>
+
+        <div class="student-info">
+            <h3>Student Information</h3>
+            <input type="text" id="studentName" placeholder="Student Name">
+            <input type="text" id="studentId" placeholder="Student ID">
+            <input type="date" id="gradingDate" value="">
+        </div>
+
+        <!-- Photo 1: Long Exposure -->
+        <div class="photo-section" data-photo="1" data-max-score="20">
+            <div class="photo-header">
+                <div>
+                    <h3 class="photo-title">📷 Photo 1 - Long Exposure</h3>
+                    <p class="photo-goal">Goal: Capture motion over time (e.g., light trails, flowing water, ghosting)</p>
+                </div>
+                <div class="score-display">
+                    <span id="photo1Score">0</span> / 20
+                </div>
+            </div>
+
+            <!-- Technical Criteria -->
+            <div class="criteria-category">
+                <h4>
+                    🔧 Technical Execution
+                    <span class="category-score" id="photo1TechnicalScore">0 / 12</span>
+                </h4>
+                
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p1t1" data-points="3" onchange="updateScores()">
+                    <label for="p1t1" class="checkpoint-text">Use of slow shutter speed (e.g. 1s or longer) clearly visible</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p1t1_points" min="0" max="3" value="0" onchange="updateScores()">
+                        <span>/ 3</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p1t2" data-points="2" onchange="updateScores()">
+                    <label for="p1t2" class="checkpoint-text">Image is correctly exposed (not blown out or overly dark)</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p1t2_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p1t3" data-points="2" onchange="updateScores()">
+                    <label for="p1t3" class="checkpoint-text">Camera stability (tripod or stable surface — no unintentional blur)</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p1t3_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p1t4" data-points="3" onchange="updateScores()">
+                    <label for="p1t4" class="checkpoint-text">Clear motion effect (e.g., light trails, subject movement) is visually noticeable</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p1t4_points" min="0" max="3" value="0" onchange="updateScores()">
+                        <span>/ 3</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p1t5" data-points="2" onchange="updateScores()">
+                    <label for="p1t5" class="checkpoint-text">Caption includes full metadata (aperture, shutter speed, ISO, focal length)</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p1t5_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aesthetic Criteria -->
+            <div class="criteria-category">
+                <h4>
+                    🎨 Aesthetic & Conceptual Quality
+                    <span class="category-score" id="photo1AestheticScore">0 / 8</span>
+                </h4>
+                
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p1a1" data-points="3" onchange="updateScores()">
+                    <label for="p1a1" class="checkpoint-text">Composition enhances the long exposure effect</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p1a1_points" min="0" max="3" value="0" onchange="updateScores()">
+                        <span>/ 3</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p1a2" data-points="3" onchange="updateScores()">
+                    <label for="p1a2" class="checkpoint-text">Subject matter is interesting and benefits from the motion technique</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p1a2_points" min="0" max="3" value="0" onchange="updateScores()">
+                        <span>/ 3</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p1a3" data-points="2" onchange="updateScores()">
+                    <label for="p1a3" class="checkpoint-text">Creativity/originality in how motion is captured</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p1a3_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comment-section">
+                <h4>💬 Additional Comments</h4>
+                <textarea id="photo3Comments" placeholder="Add specific feedback about this large aperture photo..."></textarea>
+                <div class="quick-comments">
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo3Comments', 'Beautiful subject isolation with the shallow depth of field.')">Great Isolation</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo3Comments', 'The bokeh quality is smooth and pleasing.')">Nice Bokeh</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo3Comments', 'Consider the focus point more carefully - eyes should be sharpest.')">Focus on Eyes</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo3Comments', 'The background blur effectively eliminates distractions.')">Clean Background</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo3Comments', 'Try different distances to vary the blur intensity.')">Distance Effects</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Photo 4: Small Aperture -->
+        <div class="photo-section" data-photo="4" data-max-score="16">
+            <div class="photo-header">
+                <div>
+                    <h3 class="photo-title">📷 Photo 4 - Small Aperture (Deep DOF)</h3>
+                    <p class="photo-goal">Goal: Keep both subject and background in focus (e.g., f/11 or higher)</p>
+                </div>
+                <div class="score-display">
+                    <span id="photo4Score">0</span> / 16
+                </div>
+            </div>
+
+            <!-- Technical Criteria -->
+            <div class="criteria-category">
+                <h4>
+                    🔧 Technical Execution
+                    <span class="category-score" id="photo4TechnicalScore">0 / 10</span>
+                </h4>
+                
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p4t1" data-points="3" onchange="updateScores()">
+                    <label for="p4t1" class="checkpoint-text">Small aperture used (e.g., f/11–f/22); entire scene sharp</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p4t1_points" min="0" max="3" value="0" onchange="updateScores()">
+                        <span>/ 3</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p4t2" data-points="3" onchange="updateScores()">
+                    <label for="p4t2" class="checkpoint-text">Focus is clear across foreground and background</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p4t2_points" min="0" max="3" value="0" onchange="updateScores()">
+                        <span>/ 3</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p4t3" data-points="2" onchange="updateScores()">
+                    <label for="p4t3" class="checkpoint-text">Exposure correctly balanced (not too dark due to small aperture)</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p4t3_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p4t4" data-points="2" onchange="updateScores()">
+                    <label for="p4t4" class="checkpoint-text">Caption includes full metadata (aperture, shutter speed, ISO, focal length)</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p4t4_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aesthetic Criteria -->
+            <div class="criteria-category">
+                <h4>
+                    🎨 Aesthetic & Conceptual Quality
+                    <span class="category-score" id="photo4AestheticScore">0 / 6</span>
+                </h4>
+                
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p4a1" data-points="2" onchange="updateScores()">
+                    <label for="p4a1" class="checkpoint-text">Same framing/angle as Large Aperture photo</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p4a1_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p4a2" data-points="2" onchange="updateScores()">
+                    <label for="p4a2" class="checkpoint-text">Background provides additional context or meaning</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p4a2_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p4a3" data-points="2" onchange="updateScores()">
+                    <label for="p4a3" class="checkpoint-text">Composition takes advantage of clarity across the scene</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p4a3_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comment-section">
+                <h4>💬 Additional Comments</h4>
+                <textarea id="photo4Comments" placeholder="Add specific feedback about this small aperture photo..."></textarea>
+                <div class="quick-comments">
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo4Comments', 'Excellent sharpness throughout the entire frame.')">Full Sharpness</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo4Comments', 'The environmental context adds to the story.')">Good Context</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo4Comments', 'Watch for diffraction at very small apertures (f/22+).')">Diffraction Warning</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo4Comments', 'Good comparison with the large aperture version.')">Nice Comparison</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo4Comments', 'Consider using hyperfocal distance for landscapes.')">Hyperfocal Tip</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reflection & Presentation -->
+        <div class="reflection-section">
+            <h3>✍️ Reflection & Presentation (27 pts)</h3>
+            <div class="reflection-grid">
+                <div class="reflection-item">
+                    <label>PDF Formatting & Layout:</label>
+                    <input type="number" id="pdfScore" min="0" max="5" value="0" onchange="updateScores()"> / 5
+                </div>
+                <div class="reflection-item">
+                    <label>Reflection Writing (200 words):</label>
+                    <input type="number" id="reflectionScore" min="0" max="8" value="0" onchange="updateScores()"> / 8
+                </div>
+                <div class="reflection-item">
+                    <label>Behind the Scenes Documentation:</label>
+                    <input type="number" id="btsScore" min="0" max="5" value="0" onchange="updateScores()"> / 5
+                </div>
+                <div class="reflection-item">
+                    <label>Technical Understanding Demonstrated:</label>
+                    <input type="number" id="technicalScore" min="0" max="4" value="0" onchange="updateScores()"> / 4
+                </div>
+                <div class="reflection-item">
+                    <label>Statement of Authorship:</label>
+                    <input type="number" id="authorshipScore" min="0" max="3" value="0" onchange="updateScores()"> / 3
+                </div>
+                <div class="reflection-item">
+                    <label>OneDrive Link & Submission:</label>
+                    <input type="number" id="submissionScore" min="0" max="2" value="0" onchange="updateScores()"> / 2
+                </div>
+            </div>
+            <div class="comment-section">
+                <h4>Reflection Comments</h4>
+                <textarea id="reflectionComments" placeholder="Comments on reflection quality, technical understanding, and presentation..."></textarea>
+            </div>
+        </div>
+
+        <!-- Final Grade -->
+        <div class="final-grade">
+            <h3>🧮 Overall Grade</h3>
+            <div class="grade-display" id="totalScore">0 / 100</div>
+            <div id="gradeLevel" style="font-size: 1.5rem; margin-bottom: 20px;"></div>
+            
+            <div class="grade-breakdown">
+                <div class="breakdown-item">
+                    <span>Photo 1 (Long Exposure):</span>
+                    <span id="photo1Total">0 / 20</span>
+                </div>
+                <div class="breakdown-item">
+                    <span>Photo 2 (Short Exposure):</span>
+                    <span id="photo2Total">0 / 20</span>
+                </div>
+                <div class="breakdown-item">
+                    <span>Photo 3 (Large Aperture):</span>
+                    <span id="photo3Total">0 / 17</span>
+                </div>
+                <div class="breakdown-item">
+                    <span>Photo 4 (Small Aperture):</span>
+                    <span id="photo4Total">0 / 16</span>
+                </div>
+                <div class="breakdown-item">
+                    <span>Reflection & Presentation:</span>
+                    <span id="reflectionTotal">0 / 27</span>
+                </div>
+            </div>
+            
+            <div class="grade-descriptor">
+                <div class="descriptor-item" id="hd-desc">
+                    <strong>HD (85-100):</strong> Excellent command of exposure/aperture; creative intent very clear.
+                </div>
+                <div class="descriptor-item" id="di-desc">
+                    <strong>DI (75-84):</strong> Strong technical and aesthetic control; minor improvement areas.
+                </div>
+                <div class="descriptor-item" id="cr-desc">
+                    <strong>CR (65-74):</strong> Meets expectations; demonstrates understanding with flaws.
+                </div>
+                <div class="descriptor-item" id="pa-desc">
+                    <strong>PA (50-64):</strong> Basic competency; needs more control/clarity.
+                </div>
+                <div class="descriptor-item" id="nn-desc">
+                    <strong>NN (&lt;50):</strong> Below expectations; resubmission or further review needed.
+                </div>
+            </div>
+
+            <div class="comment-section">
+                <h4>Final Comments</h4>
+                <textarea id="finalComments" placeholder="Overall feedback, strengths, areas for improvement, and recommendations..."></textarea>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="calculateTotal()">Calculate Grade</button>
+            <button class="btn btn-secondary" onclick="generateReport()">Generate Report</button>
+            <button class="btn btn-success" onclick="saveGrade()">Save Grade</button>
+            <button class="btn btn-warning" onclick="exportToExcel()">Export to Excel</button>
+            <button class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
+        </div>
+    </div>
+
+    <script>
+        // Set today's date
+        document.getElementById('gradingDate').value = new Date().toISOString().split('T')[0];
+
+        // Auto-save functionality
+        let autoSaveTimer;
+        function autoSave() {
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                const data = collectFormData();
+                localStorage.setItem('photo101_current', JSON.stringify(data));
+            }, 1000);
+        }
+
+        // Add auto-save to all inputs
+        document.querySelectorAll('input, textarea').forEach(element => {
+            element.addEventListener('input', autoSave);
+        });
+
+        // Function to collect all form data
+        function collectFormData() {
+            const data = {
+                studentName: document.getElementById('studentName').value,
+                studentId: document.getElementById('studentId').value,
+                date: document.getElementById('gradingDate').value,
+                checkpoints: {},
+                comments: {},
+                reflection: {}
+            };
+
+            // Collect all checkpoint data
+            document.querySelectorAll('.checkpoint-item input[type="checkbox"]').forEach(cb => {
+                data.checkpoints[cb.id] = {
+                    checked: cb.checked,
+                    points: document.getElementById(cb.id + '_points').value
+                };
+            });
+
+            // Collect all comments
+            document.querySelectorAll('textarea').forEach(ta => {
+                data.comments[ta.id] = ta.value;
+            });
+
+            // Collect reflection scores
+            ['pdf', 'reflection', 'bts', 'technical', 'authorship', 'submission'].forEach(item => {
+                data.reflection[item] = document.getElementById(item + 'Score').value;
+            });
+
+            return data;
+        }
+
+        // Load saved data on page load
+        function loadSavedData() {
+            const saved = localStorage.getItem('photo101_current');
+            if (saved) {
+                const data = JSON.parse(saved);
+                
+                // Restore student info
+                document.getElementById('studentName').value = data.studentName || '';
+                document.getElementById('studentId').value = data.studentId || '';
+                document.getElementById('gradingDate').value = data.date || new Date().toISOString().split('T')[0];
+                
+                // Restore checkpoints
+                Object.keys(data.checkpoints || {}).forEach(id => {
+                    const cb = document.getElementById(id);
+                    if (cb) {
+                        cb.checked = data.checkpoints[id].checked;
+                        document.getElementById(id + '_points').value = data.checkpoints[id].points;
+                    }
+                });
+                
+                // Restore comments
+                Object.keys(data.comments || {}).forEach(id => {
+                    const ta = document.getElementById(id);
+                    if (ta) ta.value = data.comments[id];
+                });
+                
+                // Restore reflection scores
+                Object.keys(data.reflection || {}).forEach(item => {
+                    const input = document.getElementById(item + 'Score');
+                    if (input) input.value = data.reflection[item];
+                });
+                
+                updateScores();
+            }
+        }
+
+        // Checkbox behavior - when checked, set points to max
+        document.querySelectorAll('.checkpoint-item input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const pointsInput = document.getElementById(this.id + '_points');
+                if (this.checked) {
+                    pointsInput.value = pointsInput.max;
+                } else {
+                    pointsInput.value = 0;
+                }
+                updateScores();
+            });
+        });
+
+        // Points input behavior - if points > 0, check the checkbox
+        document.querySelectorAll('.checkpoint-points input').forEach(input => {
+            input.addEventListener('input', function() {
+                const checkboxId = this.id.replace('_points', '');
+                const checkbox = document.getElementById(checkboxId);
+                checkbox.checked = parseInt(this.value) > 0;
+                updateScores();
+            });
+        });
+
+        function addQuickComment(textareaId, comment) {
+            const textarea = document.getElementById(textareaId);
+            if (textarea.value) {
+                textarea.value += ' ' + comment;
+            } else {
+                textarea.value = comment;
+            }
+            autoSave();
+        }
+
+        function updateScores() {
+            // Update photo scores
+            for (let i = 1; i <= 4; i++) {
+                updatePhotoScore(i);
+            }
+            
+            // Update reflection total
+            const reflectionTotal = ['pdf', 'reflection', 'bts', 'technical', 'authorship', 'submission']
+                .reduce((sum, item) => sum + (parseInt(document.getElementById(item + 'Score').value) || 0), 0);
+            document.getElementById('reflectionTotal').textContent = `${reflectionTotal} / 27`;
+            
+            // Calculate total
+            calculateTotal();
+            updateProgress();
+            autoSave();
+        }
+
+        function updatePhotoScore(photoNum) {
+            let technicalScore = 0;
+            let aestheticScore = 0;
+            let totalScore = 0;
+            
+            // Calculate technical scores
+            const technicalInputs = document.querySelectorAll(`#p${photoNum}t\\d+_points`);
+            technicalInputs.forEach(input => {
+                technicalScore += parseInt(input.value) || 0;
+            });
+            
+            // Calculate aesthetic scores
+            const aestheticInputs = document.querySelectorAll(`#p${photoNum}a\\d+_points`);
+            aestheticInputs.forEach(input => {
+                aestheticScore += parseInt(input.value) || 0;
+            });
+            
+            totalScore = technicalScore + aestheticScore;
+            
+            // Update displays
+            document.getElementById(`photo${photoNum}Score`).textContent = totalScore;
+            document.getElementById(`photo${photoNum}Total`).textContent = `${totalScore} / ${document.querySelector(`[data-photo="${photoNum}"]`).dataset.maxScore}`;
+            
+            // Update category scores
+            const techElement = document.getElementById(`photo${photoNum}TechnicalScore`);
+            const aesElement = document.getElementById(`photo${photoNum}AestheticScore`);
+            
+            if (techElement) {
+                const maxTech = Array.from(technicalInputs).reduce((sum, input) => sum + parseInt(input.max), 0);
+                techElement.textContent = `${technicalScore} / ${maxTech}`;
+            }
+            
+            if (aesElement) {
+                const maxAes = Array.from(aestheticInputs).reduce((sum, input) => sum + parseInt(input.max), 0);
+                aesElement.textContent = `${aestheticScore} / ${maxAes}`;
+            }
+        }
+
+        function calculateTotal() {
+            const photo1 = parseInt(document.getElementById('photo1Score').textContent) || 0;
+            const photo2 = parseInt(document.getElementById('photo2Score').textContent) || 0;
+            const photo3 = parseInt(document.getElementById('photo3Score').textContent) || 0;
+            const photo4 = parseInt(document.getElementById('photo4Score').textContent) || 0;
+            
+            const reflectionTotal = ['pdf', 'reflection', 'bts', 'technical', 'authorship', 'submission']
+                .reduce((sum, item) => sum + (parseInt(document.getElementById(item + 'Score').value) || 0), 0);
+            
+            const total = photo1 + photo2 + photo3 + photo4 + reflectionTotal;
+            
+            document.getElementById('totalScore').textContent = `${total} / 100`;
+            
+            // Update grade level
+            let gradeLevel = '';
+            let gradeColor = '';
+            
+            // Clear all active classes
+            document.querySelectorAll('.descriptor-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            if (total >= 85) {
+                gradeLevel = 'High Distinction (HD)';
+                gradeColor = '#28a745';
+                document.getElementById('hd-desc').classList.add('active');
+            } else if (total >= 75) {
+                gradeLevel = 'Distinction (DI)';
+                gradeColor = '#17a2b8';
+                document.getElementById('di-desc').classList.add('active');
+            } else if (total >= 65) {
+                gradeLevel = 'Credit (CR)';
+                gradeColor = '#ffc107';
+                document.getElementById('cr-desc').classList.add('active');
+            } else if (total >= 50) {
+                gradeLevel = 'Pass (PA)';
+                gradeColor = '#fd7e14';
+                document.getElementById('pa-desc').classList.add('active');
+            } else {
+                gradeLevel = 'Not Yet Competent (NN)';
+                gradeColor = '#dc3545';
+                document.getElementById('nn-desc').classList.add('active');
+            }
+            
+            const gradeLevelElement = document.getElementById('gradeLevel');
+            gradeLevelElement.textContent = gradeLevel;
+            gradeLevelElement.style.color = gradeColor;
+        }
+
+        function updateProgress() {
+            const totalCheckboxes = document.querySelectorAll('.checkpoint-item input[type="checkbox"]').length;
+            const checkedBoxes = document.querySelectorAll('.checkpoint-item input[type="checkbox"]:checked').length;
+            
+            const reflectionInputs = ['pdf', 'reflection', 'bts', 'technical', 'authorship', 'submission'];
+            const filledReflection = reflectionInputs.filter(item => 
+                parseInt(document.getElementById(item + 'Score').value) > 0
+            ).length;
+            
+            const totalItems = totalCheckboxes + reflectionInputs.length;
+            const completedItems = checkedBoxes + filledReflection;
+            
+            const percentage = Math.round((completedItems / totalItems) * 100);
+            
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressPercent').textContent = percentage + '%';
+        }
+
+        function generateReport() {
+            const studentName = document.getElementById('studentName').value || '[Student Name]';
+            const studentId = document.getElementById('studentId').value || '[Student ID]';
+            const date = document.getElementById('gradingDate').value;
+            
+            let report = `PHOTOGRAPHY 101 - ASSIGNMENT 1: PHOTOGRAPHIC TECHNIQUES\n`;
+            report += `DETAILED GRADING REPORT\n`;
+            report += `${'='.repeat(60)}\n\n`;
+            report += `Student: ${studentName}\n`;
+            report += `ID: ${studentId}\n`;
+            report += `Date: ${date}\n\n`;
+            
+            // Photo scores with checkpoints
+            for (let i = 1; i <= 4; i++) {
+                const photoNames = ['', 'Long Exposure', 'Short Exposure', 'Large Aperture (Shallow DOF)', 'Small Aperture (Deep DOF)'];
+                report += `\nPHOTO ${i}: ${photoNames[i]}\n`;
+                report += `${'-'.repeat(40)}\n`;
+                report += `Total Score: ${document.getElementById(`photo${i}Score`).textContent} / ${document.querySelector(`[data-photo="${i}"]`).dataset.maxScore}\n\n`;
+                
+                report += `Technical Execution:\n`;
+                document.querySelectorAll(`#p${i}t\\d+`).forEach(cb => {
+                    const label = document.querySelector(`label[for="${cb.id}"]`).textContent;
+                    const points = document.getElementById(cb.id + '_points').value;
+                    const max = document.getElementById(cb.id + '_points').max;
+                    const checked = cb.checked ? '✓' : '✗';
+                    report += `  ${checked} ${label}: ${points}/${max}\n`;
+                });
+                
+                report += `\nAesthetic & Conceptual Quality:\n`;
+                document.querySelectorAll(`#p${i}a\\d+`).forEach(cb => {
+                    const label = document.querySelector(`label[for="${cb.id}"]`).textContent;
+                    const points = document.getElementById(cb.id + '_points').value;
+                    const max = document.getElementById(cb.id + '_points').max;
+                    const checked = cb.checked ? '✓' : '✗';
+                    report += `  ${checked} ${label}: ${points}/${max}\n`;
+                });
+                
+                const comments = document.getElementById(`photo${i}Comments`).value;
+                if (comments) {
+                    report += `\nComments: ${comments}\n`;
+                }
+            }
+            
+            // Reflection scores
+            report += `\n\nREFLECTION & PRESENTATION\n`;
+            report += `${'-'.repeat(40)}\n`;
+            report += `PDF Formatting & Layout: ${document.getElementById('pdfScore').value}/5\n`;
+            report += `Reflection Writing: ${document.getElementById('reflectionScore').value}/8\n`;
+            report += `Behind the Scenes: ${document.getElementById('btsScore').value}/5\n`;
+            report += `Technical Understanding: ${document.getElementById('technicalScore').value}/4\n`;
+            report += `Statement of Authorship: ${document.getElementById('authorshipScore').value}/3\n`;
+            report += `OneDrive Link & Submission: ${document.getElementById('submissionScore').value}/2\n`;
+            
+            if (document.getElementById('reflectionComments').value) {
+                report += `\nComments: ${document.getElementById('reflectionComments').value}\n`;
+            }
+            
+            // Final grade
+            const totalScore = parseInt(document.getElementById('totalScore').textContent.split('/')[0]);
+            report += `\n\nFINAL GRADE: ${totalScore}/100 - ${document.getElementById('gradeLevel').textContent}\n`;
+            
+            if (document.getElementById('finalComments').value) {
+                report += `\nFinal Comments:\n${document.getElementById('finalComments').value}\n`;
+            }
+            
+            // Download report
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${studentName.replace(/\s+/g, '_')}_${studentId}_detailed_grading_report.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        function saveGrade() {
+            const studentName = document.getElementById('studentName').value;
+            const studentId = document.getElementById('studentId').value;
+            
+            if (!studentName || !studentId) {
+                alert('Please enter student name and ID before saving.');
+                return;
+            }
+            
+            const gradeData = collectFormData();
+            gradeData.totalScore = parseInt(document.getElementById('totalScore').textContent.split('/')[0]);
+            gradeData.gradeLevel = document.getElementById('gradeLevel').textContent;
+            
+            // Save to localStorage
+            const savedGrades = JSON.parse(localStorage.getItem('photo101Grades') || '[]');
+            savedGrades.push(gradeData);
+            localStorage.setItem('photo101Grades', JSON.stringify(savedGrades));
+            
+            // Clear current form data from temp storage
+            localStorage.removeItem('photo101_current');
+            
+            // Also save as JSON file
+            const jsonBlob = new Blob([JSON.stringify(gradeData, null, 2)], { type: 'application/json' });
+            const url = window.URL.createObjectURL(jsonBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${studentName.replace(/\s+/g, '_')}_${studentId}_grade_data.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            alert('Grade saved successfully!');
+        }
+
+        function exportToExcel() {
+            const studentName = document.getElementById('studentName').value || 'Student';
+            const studentId = document.getElementById('studentId').value || 'ID';
+            
+            // Create CSV content
+            let csv = 'Category,Checkpoint,Points Earned,Max Points,Checked\n';
+            
+            // Add photo data
+            for (let i = 1; i <= 4; i++) {
+                const photoNames = ['', 'Long Exposure', 'Short Exposure', 'Large Aperture', 'Small Aperture'];
+                
+                // Technical checkpoints
+                document.querySelectorAll(`#p${i}t\\d+`).forEach(cb => {
+                    const label = document.querySelector(`label[for="${cb.id}"]`).textContent;
+                    const points = document.getElementById(cb.id + '_points').value;
+                    const max = document.getElementById(cb.id + '_points').max;
+                    const checked = cb.checked ? 'Yes' : 'No';
+                    csv += `"Photo ${i} - ${photoNames[i]} (Technical)","${label}",${points},${max},${checked}\n`;
+                });
+                
+                // Aesthetic checkpoints
+                document.querySelectorAll(`#p${i}a\\d+`).forEach(cb => {
+                    const label = document.querySelector(`label[for="${cb.id}"]`).textContent;
+                    const points = document.getElementById(cb.id + '_points').value;
+                    const max = document.getElementById(cb.id + '_points').max;
+                    const checked = cb.checked ? 'Yes' : 'No';
+                    csv += `"Photo ${i} - ${photoNames[i]} (Aesthetic)","${label}",${points},${max},${checked}\n`;
+                });
+            }
+            
+            // Add reflection data
+            csv += `"Reflection & Presentation","PDF Formatting & Layout",${document.getElementById('pdfScore').value},5,N/A\n`;
+            csv += `"Reflection & Presentation","Reflection Writing (200 words)",${document.getElementById('reflectionScore').value},8,N/A\n`;
+            csv += `"Reflection & Presentation","Behind the Scenes Documentation",${document.getElementById('btsScore').value},5,N/A\n`;
+            csv += `"Reflection & Presentation","Technical Understanding Demonstrated",${document.getElementById('technicalScore').value},4,N/A\n`;
+            csv += `"Reflection & Presentation","Statement of Authorship",${document.getElementById('authorshipScore').value},3,N/A\n`;
+            csv += `"Reflection & Presentation","OneDrive Link & Submission",${document.getElementById('submissionScore').value},2,N/A\n`;
+            
+            // Add summary
+            const totalScore = parseInt(document.getElementById('totalScore').textContent.split('/')[0]);
+            csv +=d="photo1Comments" placeholder="Add specific feedback about this long exposure photo..."></textarea>
+                <div class="quick-comments">
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo1Comments', 'Excellent use of slow shutter speed to create smooth motion trails.')">Smooth Motion</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo1Comments', 'The stability of your camera work really shows in the sharp static elements.')">Good Stability</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo1Comments', 'Consider using a neutral density filter for daytime long exposures.')">ND Filter Tip</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo1Comments', 'Try varying your shutter speeds to see different motion effects.')">Experiment More</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo1Comments', 'The composition effectively guides the eye through the motion.')">Strong Composition</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Photo 2: Short Exposure -->
+        <div class="photo-section" data-photo="2" data-max-score="20">
+            <div class="photo-header">
+                <div>
+                    <h3 class="photo-title">📷 Photo 2 - Short Exposure</h3>
+                    <p class="photo-goal">Goal: Freeze a fast-moving subject clearly (e.g., splash, jump, fast object)</p>
+                </div>
+                <div class="score-display">
+                    <span id="photo2Score">0</span> / 20
+                </div>
+            </div>
+
+            <!-- Technical Criteria -->
+            <div class="criteria-category">
+                <h4>
+                    🔧 Technical Execution
+                    <span class="category-score" id="photo2TechnicalScore">0 / 10</span>
+                </h4>
+                
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p2t1" data-points="3" onchange="updateScores()">
+                    <label for="p2t1" class="checkpoint-text">Fast shutter speed used (e.g., 1/1000s or faster)</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p2t1_points" min="0" max="3" value="0" onchange="updateScores()">
+                        <span>/ 3</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p2t2" data-points="3" onchange="updateScores()">
+                    <label for="p2t2" class="checkpoint-text">Subject is perfectly frozen with no motion blur</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p2t2_points" min="0" max="3" value="0" onchange="updateScores()">
+                        <span>/ 3</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p2t3" data-points="2" onchange="updateScores()">
+                    <label for="p2t3" class="checkpoint-text">Proper exposure achieved despite fast shutter (not underexposed)</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p2t3_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p2t4" data-points="2" onchange="updateScores()">
+                    <label for="p2t4" class="checkpoint-text">Caption includes full metadata (aperture, shutter speed, ISO, focal length)</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p2t4_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aesthetic Criteria -->
+            <div class="criteria-category">
+                <h4>
+                    🎨 Aesthetic & Conceptual Quality
+                    <span class="category-score" id="photo2AestheticScore">0 / 10</span>
+                </h4>
+                
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p2a1" data-points="3" onchange="updateScores()">
+                    <label for="p2a1" class="checkpoint-text">Action or movement captured at a compelling moment ("decisive moment")</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p2a1_points" min="0" max="3" value="0" onchange="updateScores()">
+                        <span>/ 3</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p2a2" data-points="3" onchange="updateScores()">
+                    <label for="p2a2" class="checkpoint-text">Composition effectively frames the frozen action</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p2a2_points" min="0" max="3" value="0" onchange="updateScores()">
+                        <span>/ 3</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p2a3" data-points="2" onchange="updateScores()">
+                    <label for="p2a3" class="checkpoint-text">Creativity in subject selection or timing</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p2a3_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p2a4" data-points="2" onchange="updateScores()">
+                    <label for="p2a4" class="checkpoint-text">Strong visual impact and clarity</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p2a4_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comment-section">
+                <h4>💬 Additional Comments</h4>
+                <textarea id="photo2Comments" placeholder="Add specific feedback about this short exposure photo..."></textarea>
+                <div class="quick-comments">
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo2Comments', 'Perfect timing! You captured the decisive moment beautifully.')">Perfect Timing</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo2Comments', 'The frozen action is sharp and clear - excellent technique.')">Sharp Freeze</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo2Comments', 'Consider using continuous autofocus (AF-C) for moving subjects.')">AF-C Tip</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo2Comments', 'Try pre-focusing on where the action will happen.')">Pre-focus Tip</button>
+                    <button class="quick-comment-btn" onclick="addQuickComment('photo2Comments', 'Great use of high ISO to maintain fast shutter speed.')">ISO Management</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Photo 3: Large Aperture -->
+        <div class="photo-section" data-photo="3" data-max-score="17">
+            <div class="photo-header">
+                <div>
+                    <h3 class="photo-title">📷 Photo 3 - Large Aperture (Shallow DOF)</h3>
+                    <p class="photo-goal">Goal: Blur the background while keeping subject in focus (e.g., f/2.8 or lower)</p>
+                </div>
+                <div class="score-display">
+                    <span id="photo3Score">0</span> / 17
+                </div>
+            </div>
+
+            <!-- Technical Criteria -->
+            <div class="criteria-category">
+                <h4>
+                    🔧 Technical Execution
+                    <span class="category-score" id="photo3TechnicalScore">0 / 10</span>
+                </h4>
+                
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p3t1" data-points="3" onchange="updateScores()">
+                    <label for="p3t1" class="checkpoint-text">Large aperture used (e.g., f/1.4–f/4) clearly visible in depth of field</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p3t1_points" min="0" max="3" value="0" onchange="updateScores()">
+                        <span>/ 3</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p3t2" data-points="3" onchange="updateScores()">
+                    <label for="p3t2" class="checkpoint-text">Subject in sharp focus; background sufficiently blurred</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p3t2_points" min="0" max="3" value="0" onchange="updateScores()">
+                        <span>/ 3</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p3t3" data-points="2" onchange="updateScores()">
+                    <label for="p3t3" class="checkpoint-text">Exposure well balanced despite wide aperture</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p3t3_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p3t4" data-points="2" onchange="updateScores()">
+                    <label for="p3t4" class="checkpoint-text">Caption includes full metadata (aperture, shutter speed, ISO, focal length)</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p3t4_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aesthetic Criteria -->
+            <div class="criteria-category">
+                <h4>
+                    🎨 Aesthetic & Conceptual Quality
+                    <span class="category-score" id="photo3AestheticScore">0 / 7</span>
+                </h4>
+                
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p3a1" data-points="3" onchange="updateScores()">
+                    <label for="p3a1" class="checkpoint-text">Composition emphasizes subject effectively using DOF</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p3a1_points" min="0" max="3" value="0" onchange="updateScores()">
+                        <span>/ 3</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p3a2" data-points="2" onchange="updateScores()">
+                    <label for="p3a2" class="checkpoint-text">Same framing/angle as Small Aperture image for comparison</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p3a2_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+
+                <div class="checkpoint-item">
+                    <input type="checkbox" id="p3a3" data-points="2" onchange="updateScores()">
+                    <label for="p3a3" class="checkpoint-text">Artistic or intentional use of blur (bokeh quality)</label>
+                    <div class="checkpoint-points">
+                        <input type="number" id="p3a3_points" min="0" max="2" value="0" onchange="updateScores()">
+                        <span>/ 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comment-section">
+                <h4>💬 Additional Comments</h4>
+                <textarea i
