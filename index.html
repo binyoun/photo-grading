@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Photography Assignment Grading Form</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 20px;
+      background: #f5f7fa;
+      color: #333;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+    
+    .student-info {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    .student-info input {
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      width: 300px;
+    }
+    
+    .image-section {
+      background: white;
+      margin-bottom: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    
+    .image-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 15px 25px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    
+    .image-content {
+      padding: 25px;
+    }
+    
+    .scoring-section {
+      margin-bottom: 25px;
+    }
+    
+    .score-label {
+      font-weight: bold;
+      margin-bottom: 15px;
+      display: block;
+      color: #2c3e50;
+    }
+    
+    .score-container {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+    
+    .grade-visual {
+      flex: 1;
+      height: 40px;
+      display: flex;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      border: 3px solid #e9ecef;
+    }
+    
+    .grade-segment {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 12px;
+      position: relative;
+      transition: all 0.3s ease;
+      opacity: 0.4;
+    }
+    
+    .grade-segment.active {
+      opacity: 1;
+      transform: scaleY(1.2);
+      z-index: 2;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+    
+    .grade-segment.hd { background: #28a745; }
+    .grade-segment.di { background: #007bff; }
+    .grade-segment.cr { background: #ffc107; color: #333; }
+    .grade-segment.pa { background: #fd7e14; }
+    .grade-segment.nn { background: #dc3545; }
+    
+    .score-input {
+      width: 80px;
+      padding: 12px;
+      border: 3px solid #ddd;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    
+    .aesthetic-input { 
+      border-color: #e74c3c; 
+    }
+    
+    .technical-input { 
+      border-color: #3498db; 
+    }
+    
+    .score-input:focus {
+      outline: none;
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(0,123,255,0.3);
+    }
+    
+    .aesthetic-input:focus { 
+      border-color: #e74c3c; 
+      box-shadow: 0 0 15px rgba(231,76,60,0.3); 
+    }
+    
+    .technical-input:focus { 
+      border-color: #3498db; 
+      box-shadow: 0 0 15px rgba(52,152,219,0.3); 
+    }
+    
+    .grade-info {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #2c3e50;
+      min-height: 20px;
+      text-align: center;
+    }
+    
+    .boundary-highlight {
+      position: relative;
+    }
+    
+    .boundary-highlight::after {
+      content: '⚠️';
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      font-size: 10px;
+      background: #ffc107;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .boundary-warning {
+      font-size: 12px;
+      color: #856404;
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 4px;
+      padding: 4px 8px;
+      margin-top: 5px;
+      text-align: center;
+    }
+    
+    .basic-skills {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    
+    .basic-skills h4 {
+      margin-top: 0;
+      color: #495057;
+      margin-bottom: 15px;
+    }
+    
+    .skill-row {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      gap: 15px;
+    }
+    
+    .skill-label {
+      font-weight: 500;
+      min-width: 120px;
+      padding-top: 8px;
+    }
+    
+    .skill-toggle {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    
+    .toggle-btn {
+      padding: 8px 12px;
+      border: 2px solid #ddd;
+      background: white;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    
+    .toggle-btn.selected {
+      background: #007bff;
+      border-color: #007bff;
+      color: white;
+      transform: scale(1.05);
+    }
+    
+    .toggle-btn:hover {
+      transform: scale(1.05);
+      background: #e9ecef;
+    }
+    
+    .toggle-btn.selected:hover {
+      background: #0056b3;
+    }
+    
+    .comments-section {
+      margin-top: 20px;
+    }
+    
+    .comment-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    
+    .comment-btn {
+      padding: 10px 15px;
+      background: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 13px;
+    }
+    
+    .comment-btn:hover {
+      background: #5a6268;
+      transform: translateY(-1px);
+    }
+    
+    .resubmit-btn {
+      background: #dc3545 !important;
+      font-weight: bold;
+      padding: 12px 20px !important;
+    }
+    
+    .resubmit-btn:hover {
+      background: #c82333 !important;
+    }
+    
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      resize: vertical;
+      font-family: inherit;
+      font-size: 14px;
+      min-height: 80px;
+    }
+    
+    .action-buttons {
+      text-align: center;
+      margin: 30px 0;
+    }
+    
+    .action-btn {
+      padding: 15px 30px;
+      margin: 0 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+    
+    .primary-btn {
+      background: #28a745;
+      color: white;
+    }
+    
+    .primary-btn:hover {
+      background: #218838;
+      transform: translateY(-2px);
+    }
+    
+    .secondary-btn {
+      background: #6c757d;
+      color: white;
+    }
+    
+    .secondary-btn:hover {
+      background: #5a6268;
+    }
+    
+    .results {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+    
+    .results h3 {
+      color: #2c3e50;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+    }
+    
+    .score-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    
+    .score-box {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .score-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #007bff;
+    }
+    
+    @media (max-width: 768px) {
+      .score-container {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .score-input {
+        width: 100px;
+      }
+      
+      .score-summary {
+        grid-template-columns: 1fr;
+      }
+      
+      .skill-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      
+      .skill-label {
+        min-width: auto;
+        padding-top: 0;
+      }
+      
+      .toggle-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1>📸 Photography Assignment Grading Form</h1>
+
+<div class="student-info">
+  <label><strong>Student Name:</strong></label>
+  <input type="text" id="studentName" placeholder="Enter student name">
+</div>
+
+<form id="gradingForm">
+  <div id="image-sections"></div>
+  
+  <div class="action-buttons">
+    <button type="button" class="action-btn primary-btn" onclick="calculateResults()">📊 Calculate Final Results</button>
+    <button type="reset" class="action-btn secondary-btn" onclick="resetForm()">🔄 Reset Form</button>
+  </div>
+</form>
+
+<div id="results" class="results" style="display: none;"></div>
+
+<script>
+  var imageTypes = ["Long Exposure", "Short Exposure", "Large Aperture", "Small Aperture"];
+
+  var aestheticRanges = [
+    { grade: "HD", min: 24, max: 30, style: "hd" },
+    { grade: "DI", min: 21, max: 23, style: "di" },
+    { grade: "CR", min: 18, max: 20, style: "cr" },
+    { grade: "PA", min: 15, max: 17, style: "pa" },
+    { grade: "NN", min: 0, max: 14, style: "nn" }
+  ];
+
+  var technicalRanges = [
+    { grade: "HD", min: 56, max: 70, style: "hd" },
+    { grade: "DI", min: 49, max: 55, style: "di" },
+    { grade: "CR", min: 42, max: 48, style: "cr" },
+    { grade: "PA", min: 35, max: 41, style: "pa" },
+    { grade: "NN", min: 0, max: 34, style: "nn" }
+  ];
+
+  // Boundary numbers to highlight
+  var aestheticBoundaries = [14, 17, 20, 23];
+  var technicalBoundaries = [34, 41, 48, 55];
+
+  var predefinedComments = {
+    "Long Exposure": [
+      "Light trail is too much and looks overexposed.",
+      "Motorbikes in foreground are well composed.", 
+      "Long exposure looks okay overall.",
+      "Good use of neutral density filter.",
+      "Tripod stability could be improved."
+    ],
+    "Short Exposure": [
+      "Short exposure should capture moving object.",
+      "You photographed a static object, not suitable.",
+      "Needs rework to capture motion.",
+      "Good freeze of action.",
+      "Timing of the shot is excellent."
+    ],
+    "Large Aperture": [
+      "This is large aperture with shallow depth of field.",
+      "Background blur is clear, but data does not match title.",
+      "Good use of depth, framing needs work.",
+      "Bokeh quality is excellent.",
+      "Subject isolation is effective."
+    ],
+    "Small Aperture": [
+      "Blurry image due to hand-held shooting.",
+      "1/8 shutter speed is too slow without tripod.",
+      "Use ISO up to 1600 to secure shutter speed.",
+      "Object and background lack narrative connection.",
+      "Framing mismatch between two aperture images.",
+      "Revisit the aperture and f-number relationship.",
+      "Good depth of field throughout the frame."
+    ]
+  };
+
+  var basicSkills = {
+    "Aperture": ["try lower f-number", "try higher f-number", "Good"],
+    "Exposure": ["underexposed", "balanced", "overexposed", "slight adjustment needed"],
+    "ISO": ["too high", "too low", "good"],
+    "Shutter Speed": ["too fast", "too slow", "use tripod", "good"]
+  };
+
+  function createGradeVisual(type, index, ranges, maxScore) {
+    var inputClass = type === 'aesthetic' ? 'aesthetic-input' : 'technical-input';
+    var totalPoints = maxScore + 1; // 0 to maxScore inclusive
+    
+    var segmentsHTML = '';
+    for (var i = 0; i < ranges.length; i++) {
+      var range = ranges[i];
+      var width = ((range.max - range.min + 1) / totalPoints) * 100;
+      segmentsHTML += '<div class="grade-segment ' + range.style + '" style="width: ' + width + '%;" data-grade="' + range.grade + '" data-min="' + range.min + '" data-max="' + range.max + '">';
+      segmentsHTML += range.grade + '<br>' + range.min + '-' + range.max;
+      segmentsHTML += '</div>';
+    }
+    
+    return '<div class="score-container">' +
+           '<div class="grade-visual" id="' + type + '-visual-' + index + '">' + segmentsHTML + '</div>' +
+           '<input type="number" class="score-input ' + inputClass + '" id="' + type + '-input-' + index + '" placeholder="0" min="0" max="' + maxScore + '" onkeyup="updateVisual(\'' + type + '\', ' + index + ', this.value)" onchange="updateVisual(\'' + type + '\', ' + index + ', this.value)">' +
+           '</div>' +
+           '<div class="grade-info" id="' + type + '-info-' + index + '">Enter score to see grade</div>';
+  }
+
+  function updateVisual(type, index, value) {
+    var ranges = type === 'aesthetic' ? aestheticRanges : technicalRanges;
+    var boundaries = type === 'aesthetic' ? aestheticBoundaries : technicalBoundaries;
+    var visual = document.getElementById(type + '-visual-' + index);
+    var info = document.getElementById(type + '-info-' + index);
+    var segments = visual.querySelectorAll('.grade-segment');
+    var input = document.getElementById(type + '-input-' + index);
+    
+    // Reset all segments and input styling
+    for (var i = 0; i < segments.length; i++) {
+      segments[i].classList.remove('active');
+    }
+    input.classList.remove('boundary-highlight');
+    
+    if (!value || value === '') {
+      info.innerHTML = 'Enter score to see grade';
+      return;
+    }
+    
+    var score = parseInt(value);
+    var foundGrade = false;
+    
+    // Check if score is a boundary number
+    var isBoundary = false;
+    for (var b = 0; b < boundaries.length; b++) {
+      if (score === boundaries[b]) {
+        isBoundary = true;
+        break;
+      }
+    }
+    
+    // Find which range the score falls into
+    for (var i = 0; i < ranges.length; i++) {
+      var range = ranges[i];
+      if (score >= range.min && score <= range.max) {
+        // Activate the corresponding segment
+        for (var j = 0; j < segments.length; j++) {
+          var segment = segments[j];
+          if (segment.getAttribute('data-grade') === range.grade) {
+            segment.classList.add('active');
+            break;
+          }
+        }
+        
+        var gradeNames = {
+          'HD': 'High Distinction',
+          'DI': 'Distinction',
+          'CR': 'Credit', 
+          'PA': 'Pass',
+          'NN': 'Fail'
+        };
+        
+        var gradeText = score + ' points = ' + gradeNames[range.grade] + ' (' + range.grade + ')';
+        
+        if (isBoundary) {
+          input.classList.add('boundary-highlight');
+          gradeText += '<div class="boundary-warning">⚠️ Boundary Score - Consider student appeal risk</div>';
+        }
+        
+        info.innerHTML = gradeText;
+        foundGrade = true;
+        break;
+      }
+    }
+    
+    if (!foundGrade) {
+      info.innerHTML = 'Score out of range (0-' + (type === 'aesthetic' ? '30' : '70') + ')';
+    }
+  }
+
+  function buildForm() {
+    var container = document.getElementById("image-sections");
+    
+    for (var idx = 0; idx < imageTypes.length; idx++) {
+      var type = imageTypes[idx];
+      var section = document.createElement("div");
+      section.className = "image-section";
+      
+      var html = '<div class="image-header">' + type + '</div><div class="image-content">';
+      
+      html += '<div class="scoring-section">';
+      html += '<span class="score-label">Aesthetic Achievement (Max 30 pts)</span>';
+      html += createGradeVisual('aesthetic', idx, aestheticRanges, 30);
+      html += '</div>';
+
+      html += '<div class="scoring-section">';
+      html += '<span class="score-label">Technical Skills (Max 70 pts)</span>';
+      html += createGradeVisual('technical', idx, technicalRanges, 70);
+      html += '</div>';
+
+      html += '<div class="basic-skills"><h4>📋 Basic Technical Requirements</h4>';
+      var skillKeys = Object.keys(basicSkills);
+      for (var s = 0; s < skillKeys.length; s++) {
+        var skill = skillKeys[s];
+        var options = basicSkills[skill];
+        html += '<div class="skill-row"><span class="skill-label">' + skill + ':</span><div class="skill-toggle">';
+        for (var o = 0; o < options.length; o++) {
+          var option = options[o];
+          html += '<button type="button" class="toggle-btn" onclick="selectSkill(\'' + skill.toLowerCase().replace(' ', '') + '\', ' + idx + ', \'' + option + '\', this)">' + option + '</button>';
+        }
+        html += '</div></div>';
+      }
+      html += '</div>';
+
+      html += '<div class="comments-section"><span class="score-label">Quick Comments</span><div class="comment-buttons">';
+      html += '<button type="button" class="comment-btn resubmit-btn" onclick="addComment(' + idx + ', \'RESUBMISSION NEEDED - Does not meet basic technical requirements for this technique.\')">⚠️ RESUBMISSION NEEDED</button>';
+      var comments = predefinedComments[type];
+      for (var c = 0; c < comments.length; c++) {
+        var comment = comments[c].replace(/'/g, "\\'");
+        var shortComment = comments[c].substring(0, 30) + (comments[c].length > 30 ? '...' : '');
+        html += '<button type="button" class="comment-btn" onclick="addComment(' + idx + ', \'' + comment + '\')">💬 ' + shortComment + '</button>';
+      }
+      html += '</div><textarea id="comment-' + idx + '" placeholder="Additional comments..." rows="3"></textarea></div>';
+
+      html += '</div>';
+      section.innerHTML = html;
+      container.appendChild(section);
+    }
+  }
+
+  function selectSkill(skill, index, rating, button) {
+    var siblings = button.parentNode.querySelectorAll('.toggle-btn');
+    for (var i = 0; i < siblings.length; i++) {
+      siblings[i].classList.remove('selected');
+    }
+    
+    button.classList.add('selected');
+    button.parentNode.setAttribute('data-' + skill, rating);
+  }
+
+  function addComment(index, text) {
+    var textarea = document.getElementById('comment-' + index);
+    var currentValue = textarea.value.trim();
+    textarea.value = currentValue ? currentValue + '\n\n' + text : text;
+  }
+
+  function calculateResults() {
+    var studentName = document.getElementById('studentName').value || 'Student';
+    var totalAesthetic = 0;
+    var totalTechnical = 0;
+    var combinedComments = '';
+
+    for (var i = 0; i < imageTypes.length; i++) {
+      var aestheticInput = document.getElementById('aesthetic-input-' + i);
+      var technicalInput = document.getElementById('technical-input-' + i);
+      
+      var aestheticScore = parseInt(aestheticInput.value || '0');
+      var technicalScore = parseInt(technicalInput.value || '0');
+      var comments = document.getElementById('comment-' + i).value;
+
+      totalAesthetic += aestheticScore;
+      totalTechnical += technicalScore;
+
+      // Collect skills assessment for each image
+      var skillsForImage = '';
+      var skillKeys = Object.keys(basicSkills);
+      for (var s = 0; s < skillKeys.length; s++) {
+        var skill = skillKeys[s];
+        var skillKey = skill.toLowerCase().replace(' ', '');
+        var skillElements = document.querySelectorAll('[data-' + skillKey + ']');
+        for (var e = 0; e < skillElements.length; e++) {
+          var rating = skillElements[e].getAttribute('data-' + skillKey);
+          if (rating) {
+            var icon = (rating === 'Good' || rating === 'good' || rating === 'balanced') ? '✓' : '⚠';
+            skillsForImage += skill + ': ' + icon + ' ' + rating + ' | ';
+            break;
+          }
+        }
+      }
+
+      // Add to combined comments if there's content
+      if (comments.trim() || skillsForImage) {
+        combinedComments += '\n[' + imageTypes[i] + ']\n';
+        if (skillsForImage) {
+          combinedComments += 'Technical Requirements: ' + skillsForImage.slice(0, -3) + '\n';
+        }
+        if (comments.trim()) {
+          combinedComments += 'Comments: ' + comments + '\n';
+        }
+      }
+    }
+
+    // Convert to weighted scores: aesthetic and technical equally weighted
+    var aestheticWeighted = (totalAesthetic / 120) * 30; // Convert 120 possible points to 30
+    var technicalWeighted = (totalTechnical / 280) * 70;  // Convert 280 possible points to 70
+    
+    // Round to 1 decimal place
+    aestheticWeighted = Math.round(aestheticWeighted * 10) / 10;
+    technicalWeighted = Math.round(technicalWeighted * 10) / 10;
+
+    var output = '<h3>📋 Final Results for ' + studentName + '</h3>';
+    
+    output += '<div class="score-summary">';
+    output += '<div class="score-box"><div><strong>Aesthetic Achievement</strong><br>(Equally Weighted)</div><div class="score-value">' + aestheticWeighted + '/30</div></div>';
+    output += '<div class="score-box"><div><strong>Technical Skills</strong><br>(Equally Weighted)</div><div class="score-value">' + technicalWeighted + '/70</div></div>';
+    output += '</div>';
+
+    // Always show comments summary, even if empty
+    output += '<div style="margin-top: 25px;"><h4>📝 Comments Summary</h4>';
+    if (combinedComments.trim()) {
+      output += '<div style="background: #f8f9fa; padding: 15px; border-radius: 8px; white-space: pre-line; border-left: 4px solid #007bff;">' + combinedComments.trim() + '</div>';
+    } else {
+      output += '<div style="background: #f8f9fa; padding: 15px; border-radius: 8px; color: #6c757d; font-style: italic;">No comments provided</div>';
+    }
+    output += '</div>';
+
+    var resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = output;
+    resultsDiv.style.display = 'block';
+    resultsDiv.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function resetForm() {
+    var inputs = document.querySelectorAll('input, textarea');
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].value = '';
+      inputs[i].classList.remove('boundary-highlight');
+    }
+    
+    var buttons = document.querySelectorAll('.toggle-btn.selected');
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].classList.remove('selected');
+    }
+    
+    var segments = document.querySelectorAll('.grade-segment.active');
+    for (var i = 0; i < segments.length; i++) {
+      segments[i].classList.remove('active');
+    }
+    
+    var infos = document.querySelectorAll('.grade-info');
+    for (var i = 0; i < infos.length; i++) {
+      infos[i].innerHTML = 'Enter score to see grade';
+    }
+    
+    document.getElementById('results').style.display = 'none';
+  }
+
+  buildForm();
+</script>
+
+</body>
+</html>
